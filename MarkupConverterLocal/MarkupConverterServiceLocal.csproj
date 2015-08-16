@@ -50,13 +50,8 @@
   <ItemGroup>
     <Compile Include="MarkupConverterService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServiceNinjectModule.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FrontlineMarkupLanguagePlugin\FrontlineMarkupLanguagePlugin.csproj">
-      <Project>{3c810f85-d968-4e78-83cc-69dfd5057b69}</Project>
-      <Name>FrontlineMarkupLanguagePlugin</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MarkupConverterApi\MarkupConverterServiceApi.csproj">
       <Project>{f35f97c9-fa40-454e-b024-f482c2b783f9}</Project>
       <Name>MarkupConverterServiceApi</Name>
@@ -65,9 +60,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Plugins\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

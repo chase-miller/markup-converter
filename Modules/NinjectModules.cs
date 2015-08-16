@@ -1,5 +1,6 @@
 ﻿using FrontlineMarkupLanguagePlugin;
 using MarkupConverterServiceApi;
+using MarkupConverterServiceLocal;
 using Ninject;
 using Ninject.Activation;
 using Ninject.Extensions.Conventions;
@@ -13,15 +14,14 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MarkupConverterServiceLocal
+namespace MarkupConverter.ModulesNinjectModules
 {
-    public class ServiceNinjectModule : NinjectModule
+    public class NinjectModules : NinjectModule
     {
         public override void Load()
         {
-            Bind<IMarkupConverterService>().To<MarkupConverterServiceLocal>();
-
-            this.Kernel.Load(Assembly.GetAssembly(typeof(FrontlineMarkupLanguage)));
+            Bind<IMarkupConverterService>().To<MarkupConverterServiceLocal.MarkupConverterServiceLocal>();
+            Bind<IMarkupLanguage>().To<FrontlineMarkupLanguage>();
 
             string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 

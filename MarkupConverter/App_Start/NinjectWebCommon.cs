@@ -3,8 +3,8 @@
 
 namespace MarkupConverterWeb.App_Start
 {
+    using MarkupConverter.ModulesNinjectModules;
     using MarkupConverterServiceApi;
-    using MarkupConverterServiceLocal;
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
     using Ninject;
     using Ninject.Activation;
@@ -51,8 +51,8 @@ namespace MarkupConverterWeb.App_Start
                 kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);
                 kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
 
-                // Unfortunately we need a direct reference to MarkupConverterServiceLocal because ASP.NET MVC functions as the composition root.
-                kernel.Load(Assembly.GetAssembly(typeof(MarkupConverterServiceLocal)));
+                // Avoid direct references to implementations by referencing a composite root.
+                kernel.Load(Assembly.GetAssembly(typeof(NinjectModules)));
 
                 RegisterServices(kernel);
 
@@ -71,7 +71,6 @@ namespace MarkupConverterWeb.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
-            // Search the plugins directory.
             kernel.Bind(x => x
                 .FromAssembliesInPath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location))
                 .SelectAllClasses()

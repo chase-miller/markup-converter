@@ -278,9 +278,9 @@
       <Project>{f35f97c9-fa40-454e-b024-f482c2b783f9}</Project>
       <Name>MarkupConverterServiceApi</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MarkupConverterLocal\MarkupConverterServiceLocal.csproj">
-      <Project>{0275c07d-c07f-4eb6-96cd-511bd0e120b5}</Project>
-      <Name>MarkupConverterServiceLocal</Name>
+    <ProjectReference Include="..\Modules\Modules.csproj">
+      <Project>{e8824065-6790-4562-84b7-65fbd6c3b464}</Project>
+      <Name>Modules</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
