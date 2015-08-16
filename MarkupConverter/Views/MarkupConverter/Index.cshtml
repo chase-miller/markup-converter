@@ -1,47 +1,47 @@
-﻿
+﻿@model MarkupConverterWeb.Models.MarkupConverterModel
 @{
     ViewBag.Title = "Markup Converter";
 }
 
 <div class="container">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-4 col-md-offset-4">
             <h3 class="text-center">Markup</h3>
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-4 col-md-offset-4">
             <form class="form-horizontal">
                 <div class="form-group">
-                    <label for="markupInput" class="col-sm-2 control-label">Markup Text</label>
-                    <div class="col-sm-10">
+                    <label for="markupInput" class="col-md-2 control-label">Markup Text</label>
+                    <div class="col-md-10">
                         <textarea placeholder="Enter your markup text here" id="markupInput" class="form-control" rows="10"></textarea>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="markupLanguage" class="col-sm-2 control-label">Markup Language</label>
-                    <div class="col-sm-10">
-                        <select class="form-control" id="markupLanguage">
-                            @*TODO - Replace this with dynamically generated list*@
-                            <option>Frontline Markup</option>
-                        </select>
+                    <label for="markupLanguage" class="col-md-2 control-label">Markup Language</label>
+                    <div class="col-md-10">
+                        @Html.DropDownList(
+                            "markupLanguage",
+                            new SelectList(
+                                Model.Languages.Select(x => new { Value = x, Text = x }),
+                                "Value",
+                                "Text"
+                            ),
+                            new { @class = "form-control", @id = "markupLanguage" }
+                        )
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
+                    <div class="pull-right">
                         <button type="submit" class="btn btn-default">Convert</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-12">
-            <h3 class="text-center">Result</h3>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-10">Oh Hi!</div>
-    </div>
+</div>
+
+<div class="result-placeholder">
+    @Html.Action("ResultPartial")
 </div>

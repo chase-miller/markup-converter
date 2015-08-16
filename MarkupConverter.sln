@@ -5,6 +5,12 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarkupConverterWeb", "MarkupConverter\MarkupConverterWeb.csproj", "{068A7896-C56E-4C0C-B3E6-43A7EB27FDD6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarkupConverterServiceApi", "MarkupConverterApi\MarkupConverterServiceApi.csproj", "{F35F97C9-FA40-454E-B024-F482C2B783F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarkupConverterServiceLocal", "MarkupConverterLocal\MarkupConverterServiceLocal.csproj", "{0275C07D-C07F-4EB6-96CD-511BD0E120B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrontlineMarkupLanguagePlugin", "FrontlineMarkupLanguagePlugin\FrontlineMarkupLanguagePlugin.csproj", "{3C810F85-D968-4E78-83CC-69DFD5057B69}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +21,18 @@ Global
 		{068A7896-C56E-4C0C-B3E6-43A7EB27FDD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{068A7896-C56E-4C0C-B3E6-43A7EB27FDD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{068A7896-C56E-4C0C-B3E6-43A7EB27FDD6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F35F97C9-FA40-454E-B024-F482C2B783F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F35F97C9-FA40-454E-B024-F482C2B783F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F35F97C9-FA40-454E-B024-F482C2B783F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F35F97C9-FA40-454E-B024-F482C2B783F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0275C07D-C07F-4EB6-96CD-511BD0E120B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0275C07D-C07F-4EB6-96CD-511BD0E120B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0275C07D-C07F-4EB6-96CD-511BD0E120B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0275C07D-C07F-4EB6-96CD-511BD0E120B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C810F85-D968-4E78-83CC-69DFD5057B69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C810F85-D968-4E78-83CC-69DFD5057B69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C810F85-D968-4E78-83CC-69DFD5057B69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C810F85-D968-4E78-83CC-69DFD5057B69}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

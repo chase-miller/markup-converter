@@ -8,8 +8,17 @@ namespace MarkupConverterWeb.App_Start
 
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 
+    using MarkupConverterServiceLocal;
+
     using Ninject;
     using Ninject.Web.Common;
+    using Ninject.Extensions.Conventions;
+    using System.Reflection;
+    using System.IO;
+    using MarkupConverterServiceApi;
+    using Ninject.Extensions.Conventions.BindingGenerators;
+    using Ninject.Activation;
+    using System.Linq;
 
     public static class NinjectWebCommon 
     {
@@ -45,7 +54,10 @@ namespace MarkupConverterWeb.App_Start
                 kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);
                 kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
 
+                kernel.Load(Assembly.GetAssembly(typeof(MarkupConverterServiceLocal)));
+
                 RegisterServices(kernel);
+
                 return kernel;
             }
             catch
@@ -61,6 +73,11 @@ namespace MarkupConverterWeb.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
-        }        
+            // Search the plugins directory.
+            kernel.Bind(x => x
+                .FromAssembliesInPath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location))
+                .SelectAllClasses()
+                .BindDefaultInterface());
+        }
     }
 }
