@@ -3,22 +3,19 @@
 
 namespace MarkupConverterWeb.App_Start
 {
-    using System;
-    using System.Web;
-
-    using Microsoft.Web.Infrastructure.DynamicModuleHelper;
-
-    using MarkupConverterServiceLocal;
-
-    using Ninject;
-    using Ninject.Web.Common;
-    using Ninject.Extensions.Conventions;
-    using System.Reflection;
-    using System.IO;
     using MarkupConverterServiceApi;
-    using Ninject.Extensions.Conventions.BindingGenerators;
+    using MarkupConverterServiceLocal;
+    using Microsoft.Web.Infrastructure.DynamicModuleHelper;
+    using Ninject;
     using Ninject.Activation;
+    using Ninject.Extensions.Conventions;
+    using Ninject.Extensions.Conventions.BindingGenerators;
+    using Ninject.Web.Common;
+    using System;
+    using System.IO;
     using System.Linq;
+    using System.Reflection;
+    using System.Web;
 
     public static class NinjectWebCommon 
     {
@@ -54,6 +51,7 @@ namespace MarkupConverterWeb.App_Start
                 kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);
                 kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
 
+                // Unfortunately we need a direct reference to MarkupConverterServiceLocal because ASP.NET MVC functions as the composition root.
                 kernel.Load(Assembly.GetAssembly(typeof(MarkupConverterServiceLocal)));
 
                 RegisterServices(kernel);

@@ -9,5 +9,9 @@ namespace MarkupConverterServiceApi
     public interface IMarkupLanguage
     {
         string GetLanguage();
+
+        string ParseMarkup(string markupText);
+
+        string ConvertToMarkup(string markupText);
     }
 }

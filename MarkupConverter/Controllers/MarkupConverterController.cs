@@ -27,16 +27,14 @@ namespace MarkupConverterWeb.Controllers
             return View(model);
         }
 
-        [ChildActionOnly]
-        public ActionResult ResultPartial(string markupLanguage, string markupText)
+        [HttpPost]
+        public ActionResult ConvertMarkup(MarkupConverterModel model)
         {
-            MarkupConverterResultModel model = new MarkupConverterResultModel();
+            string result = this.markupConverterService.ParseMarkup(model.MarkupLanguage, model.MarkupText);
 
-            string result = this.markupConverterService.ParseMarkup(markupLanguage, markupText);
+            model.ConvertedMarkup = result;
 
-            model.Result = result;
-
-            return PartialView(model);
+            return PartialView("ResultPartial", model);
         }
     }
 }

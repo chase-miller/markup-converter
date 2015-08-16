@@ -11,17 +11,10 @@ namespace MarkupConverterServiceLocal
     {
         private List<IMarkupLanguage> languages = new List<IMarkupLanguage>();
 
-        public MarkupConverterServiceLocal()
-        {
-
-        }
-
-        /*
         public MarkupConverterServiceLocal(IMarkupLanguage[] languages)
         {
             this.languages.AddRange(languages);
         }
-        */
 
         IList<string> IMarkupConverterService.GetLanguages()
         {
@@ -34,7 +27,10 @@ namespace MarkupConverterServiceLocal
 
         string IMarkupConverterService.ParseMarkup(string markupLanguage, string markupText)
         {
-            return "hard-coded result";
+            // Throw an exception if we have more than one plugin for a given language.
+            IMarkupLanguage markupLanguageObject = this.languages.Single(x => x.GetLanguage() == markupLanguage);
+
+            return markupLanguageObject.ParseMarkup(markupText);
         }
 
         /// <summary>

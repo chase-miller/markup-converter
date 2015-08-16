@@ -11,37 +11,46 @@
     </div>
     <div class="row">
         <div class="col-md-4 col-md-offset-4">
-            <form class="form-horizontal">
-                <div class="form-group">
-                    <label for="markupInput" class="col-md-2 control-label">Markup Text</label>
-                    <div class="col-md-10">
-                        <textarea placeholder="Enter your markup text here" id="markupInput" class="form-control" rows="10"></textarea>
+            @using (Ajax.BeginForm("ConvertMarkup", new AjaxOptions()
+            {
+                InsertionMode = InsertionMode.Replace,
+                UpdateTargetId = "result-placeholder"
+            }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label for="markupText" class="col-md-2 control-label">Markup Text</label>
+                        <div class="col-md-10">
+                            <textarea placeholder="Enter your markup text here" id="markupText" class="form-control" rows="10"></textarea>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label for="markupLanguage" class="col-md-2 control-label">Markup Language</label>
-                    <div class="col-md-10">
-                        @Html.DropDownList(
-                            "markupLanguage",
-                            new SelectList(
-                                Model.Languages.Select(x => new { Value = x, Text = x }),
-                                "Value",
-                                "Text"
-                            ),
-                            new { @class = "form-control", @id = "markupLanguage" }
-                        )
+                    <div class="form-group">
+                        <label for="markupLanguage" class="col-md-2 control-label">Markup Language</label>
+                        <div class="col-md-10">
+                            @Html.DropDownList(
+                                 "markupLanguage",
+                                 new SelectList(
+                                     Model.Languages.Select(x => new { Value = x, Text = x }),
+                                     "Value",
+                                     "Text"
+                                 ),
+                                 new { @class = "form-control", @id = "markupLanguage" }
+                     )
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <div class="pull-right">
-                        <button type="submit" class="btn btn-default">Convert</button>
+                    <div class="form-group">
+                        <div class="pull-right">
+                            <button type="submit" class="btn btn-default">Convert</button>
+                        </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            }
         </div>
     </div>
 </div>
 
-<div class="result-placeholder">
-    @Html.Action("ResultPartial")
+<div id="result-placeholder">
+    
 </div>

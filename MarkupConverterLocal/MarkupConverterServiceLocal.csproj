@@ -34,6 +34,10 @@
       <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Ninject.Extensions.Conventions, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.Extensions.Conventions.3.2.0.0\lib\net45-full\Ninject.Extensions.Conventions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -49,6 +53,10 @@
     <Compile Include="ServiceNinjectModule.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FrontlineMarkupLanguagePlugin\FrontlineMarkupLanguagePlugin.csproj">
+      <Project>{3c810f85-d968-4e78-83cc-69dfd5057b69}</Project>
+      <Name>FrontlineMarkupLanguagePlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MarkupConverterApi\MarkupConverterServiceApi.csproj">
       <Project>{f35f97c9-fa40-454e-b024-f482c2b783f9}</Project>
       <Name>MarkupConverterServiceApi</Name>
@@ -56,6 +64,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Plugins\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
