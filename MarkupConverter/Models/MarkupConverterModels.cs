@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Web;
 
@@ -10,13 +11,16 @@ namespace MarkupConverterWeb.Models
         /// <summary>
         /// The list of all languages available.
         /// </summary>
+        [DisplayName("Languages")]
         public IList<string> Languages { get; private set; }
 
+        [DisplayName("Markup Text")]
         public string MarkupText { get; set; }
 
         /// <summary>
         /// The user-selected markup language.
         /// </summary>
+        [DisplayName("Lang")]
         public string MarkupLanguage { get; set; }
 
         /// <summary>

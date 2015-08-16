@@ -21,13 +21,13 @@
                 @Html.ValidationSummary(true)
                 <form class="form-horizontal">
                     <div class="form-group">
-                        <label for="markupText" class="col-md-2 control-label">Markup Text</label>
+                        @Html.LabelFor(model => model.MarkupText, new { @class = "col-md-2 control-label" })
                         <div class="col-md-10">
-                            <textarea placeholder="Enter your markup text here" id="markupText" class="form-control" rows="10"></textarea>
+                            @Html.TextAreaFor(model => model.MarkupText, new { @placeholder = "Enter your markup text here", @class = "form-control", @rows="10"})
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="markupLanguage" class="col-md-2 control-label">Markup Language</label>
+                        @Html.LabelFor(model => model.MarkupLanguage, new { @class = "col-md-2 control-label" })
                         <div class="col-md-10">
                             @Html.DropDownList(
                                  "markupLanguage",
