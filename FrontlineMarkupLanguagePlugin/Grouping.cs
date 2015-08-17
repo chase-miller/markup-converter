@@ -48,8 +48,6 @@ namespace FrontlineMarkupLanguagePlugin
         {
             result = null;
 
-            stringToParse = stringToParse.Replace(" ", "");
-
             if (stringToParse.StartsWith("(") && stringToParse.EndsWith(")"))
             {
                 // Strip off the opening and closing parens
@@ -74,7 +72,12 @@ namespace FrontlineMarkupLanguagePlugin
 
             foreach (Element element in this.Elements)
             {
-                result.Append(element.ToString()).AppendLine();
+                string elementAsString = element.ToString();
+
+                if (!string.IsNullOrWhiteSpace(elementAsString))
+                {
+                    result.Append(elementAsString);
+                }
             }
 
             return result.ToString();

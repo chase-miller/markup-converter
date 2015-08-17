@@ -36,11 +36,11 @@ namespace FrontlineMarkupLanguagePlugin
         {
             StringBuilder builder = this.GeneratePrepender();
 
-            builder.Append(this.elementAsString);
+            builder.Append(this.elementAsString).AppendLine();
 
             if (this.childGrouping != null)
-            { 
-                builder.AppendLine(this.childGrouping.ToString());
+            {
+                builder.Append(this.childGrouping.ToString());
             }
 
             return builder.ToString();
@@ -54,12 +54,12 @@ namespace FrontlineMarkupLanguagePlugin
         {
             StringBuilder appender = new StringBuilder();
 
-            for (int i = 1; i < this.depthLevel; i++)
+            for (int i = 0; i < this.depthLevel; i++)
             {
                 appender.Append("-");
             }
 
-            if (this.depthLevel > 1)
+            if (this.depthLevel > 0)
             {
                 appender.Append(" ");
             }
