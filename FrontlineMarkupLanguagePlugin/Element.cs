@@ -8,46 +8,49 @@ namespace FrontlineMarkupLanguagePlugin
 {
     internal class Element
     {
-        /// <summary>
-        /// If this element is a string, this will be populated.
-        /// </summary>
-        internal string ElementString { get; set; }
-
-        /// <summary>
-        /// Otherwise, if this element is a grouping, this will be populated.
-        /// </summary>
-        internal Grouping ElementGrouping { get; set; }
-
+        private string elementAsString;
         private int depthLevel = 0;
 
-        public Element (int depthLevel)
+        private Grouping childGrouping;
+
+        public Element (string elementAsString, int depthLevel)
         {
+            this.elementAsString = elementAsString;
             this.depthLevel = depthLevel;
+        }
+
+        /// <summary>
+        /// Attempts to add a child grouping based on the provided string.
+        /// </summary>
+        /// <param name="childGroupingAsString"></param>
+        public void AddChildGrouping(string childGroupingAsString)
+        {
+            Grouping grouping;
+            if (Grouping.TryParseGrouping(childGroupingAsString, this.depthLevel + 1, out grouping))
+            {
+                this.childGrouping = grouping;
+            }
         }
 
         public override string ToString()
         {
-            string result = string.Empty;
+            StringBuilder builder = this.GeneratePrepender();
 
-            string prepender = this.GeneratePrepender();
+            builder.Append(this.elementAsString);
 
-            if (!string.IsNullOrEmpty(this.ElementString))
-            {
-                result = prepender + this.ElementString;
-            }
-            else
-            {
-                result = prepender + this.ElementGrouping.ToString();
+            if (this.childGrouping != null)
+            { 
+                builder.AppendLine(this.childGrouping.ToString());
             }
 
-            return result;
+            return builder.ToString();
         }
 
         /// <summary>
         /// Generates text that is appended to the line.  The generated text depends on the depth level.
         /// </summary>
         /// <returns></returns>
-        private string GeneratePrepender()
+        private StringBuilder GeneratePrepender()
         {
             StringBuilder appender = new StringBuilder();
 
@@ -61,7 +64,7 @@ namespace FrontlineMarkupLanguagePlugin
                 appender.Append(" ");
             }
 
-            return appender.ToString();
+            return appender;
         }
     }
 }

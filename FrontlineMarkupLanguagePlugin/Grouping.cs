@@ -10,20 +10,82 @@ namespace FrontlineMarkupLanguagePlugin
     class Grouping
     {
         private string stringRepresentation;
-        int depthLevel = 0;
+        private int depthLevel = 0;
 
         /// <summary>
-        /// A grouping may or may not include groupings within itself.
+        /// The elements in this group.
         /// </summary>
-        List<Element> InternalElements { get; set; }
+        internal List<Element> Elements { get; private set; }
 
         internal Grouping(string stringRepresentation, int depthLevel)
         {
             this.stringRepresentation = stringRepresentation;
             this.depthLevel = depthLevel;
-            this.InternalElements = new List<Element>();
+            this.Elements = new List<Element>();
 
             this.CreateInternalElements();
+        }
+
+        /// <summary>
+        /// Tries to parse the provided string into a <see cref="Grouping"/>. Assumes a depth-level of 0.
+        /// </summary>
+        /// <param name="stringToParse">The string to try and parse.</param>
+        /// <param name="result">The resulting <see cref="Grouping"/></param>
+        /// <returns>True if the provided string is valid.</returns>
+        internal static bool TryParseGrouping(string stringToParse, out Grouping result)
+        {
+            return TryParseGrouping(stringToParse, 0, out result);
+        }
+
+        /// <summary>
+        /// Tries to parse the provided string into a <see cref="Grouping"/>.
+        /// </summary>
+        /// <param name="stringToParse">The string to try and parse.</param>
+        /// <param name="depthLevel">How many levels deep this grouping is.</param>
+        /// <param name="result">The resulting <see cref="Grouping"/></param>
+        /// <returns>True if the provided string is valid.</returns>
+        internal static bool TryParseGrouping(string stringToParse, int depthLevel, out Grouping result)
+        {
+            result = null;
+
+            /*
+            if (stringToParse.StartsWith("(") && stringToParse.EndsWith(")"))
+            {
+                // Strip off the opening and closing parens
+                stringToParse = stringToParse.Remove(0, 1);
+                stringToParse = stringToParse.Remove(stringToParse.Length - 1, 1);
+            }
+            */
+
+            // We can't end with comma (since it's used for listing).
+            if (stringToParse.EndsWith(","))
+            {
+                return false;
+            }
+
+            try
+            {
+                result = new Grouping(stringToParse, depthLevel);
+            }
+            catch (Exception)
+            {
+                // Since this is a try, swallow the exception.
+                return false;
+            }
+
+            return true;
+        }
+
+        public override string ToString()
+        {
+            StringBuilder result = new StringBuilder();
+
+            foreach (Element element in this.Elements)
+            {
+                result.Append(element.ToString()).AppendLine();
+            }
+
+            return result.ToString();
         }
 
         /// <summary>
@@ -31,56 +93,72 @@ namespace FrontlineMarkupLanguagePlugin
         /// </summary>
         private void CreateInternalElements()
         {
-            int innerDepthLevel = depthLevel + 1;
-
-            foreach (string element in this.SplitTopLevelElements())
+            foreach (Element element in this.SplitTopLevelElements())
             {
-                Grouping group;
-                if (TryParseGrouping(element, out group))
-                {
-                    this.InternalElements.Add(new Element(innerDepthLevel) { ElementGrouping = group });
-                }
-                else
-                {
-                    this.InternalElements.Add(new Element(innerDepthLevel) { ElementString = element });
-                }
+                this.Elements.Add(element);
             }
         }
 
-        private IList<string> SplitTopLevelElements()
+        private IList<Element> SplitTopLevelElements()
         {
-            List<string> elements = new List<string>();
+            List<Element> elements = new List<Element>();
 
-            int currentStringStartingIndex = 0;
-            int cursor = 0;
-
-            while (cursor < stringRepresentation.Length)
+            if (this.stringRepresentation.Contains(',') || this.stringRepresentation.Contains('('))
             {
-                if (this.stringRepresentation[cursor] == ',')
-                {
-                    string word = this.stringRepresentation.Substring(currentStringStartingIndex, (cursor - currentStringStartingIndex));
-                    elements.Add(word);
+                int currentStringStartingIndex = 0;
+                int cursor = 0;
 
-                    cursor++;
-                    currentStringStartingIndex = cursor;
-                }
-                else if (this.stringRepresentation[cursor] == '(')
+                while (cursor < stringRepresentation.Length)
                 {
-                    // Find the matching closing parenthesis, add the word, and update the cursor.
-                    int matchingClosingIndex = this.FindMatchingClosingParenPosition(cursor);
+                    if (this.stringRepresentation[cursor] == ',')
+                    {
+                        string word = this.stringRepresentation.Substring(currentStringStartingIndex, (cursor - currentStringStartingIndex));
+                        elements.Add(new Element(word, depthLevel));
 
-                    string innerGroupString = this.stringRepresentation.Substring(currentStringStartingIndex, (matchingClosingIndex - currentStringStartingIndex));
-                    elements.Add(innerGroupString);
+                        cursor++;
+                        currentStringStartingIndex = cursor;
+                    }
+                    else if (this.stringRepresentation[cursor] == '(')
+                    {
+                        // First get the text before this ( and move the cursor.  
+                        string wordBeforeParen = this.stringRepresentation.Substring(currentStringStartingIndex, (cursor - currentStringStartingIndex));
 
-                    cursor = matchingClosingIndex + 1;
-                    currentStringStartingIndex = cursor;
-                }
-                else
-                {
-                    cursor++;
+                        currentStringStartingIndex = cursor;
+
+                        // Now, find the matching closing parenthesis, add everything in between, and update the cursor.
+                        int matchingClosingIndex = this.FindMatchingClosingParenPosition(cursor);
+
+                        string innerGroupString = this.stringRepresentation.Substring(currentStringStartingIndex, (matchingClosingIndex - currentStringStartingIndex));
+
+                        // If there is no word before (, this must just be a grouping without an element.
+                        Element newElement;
+                        if (string.IsNullOrEmpty(wordBeforeParen))
+                        {
+                            newElement = new Element(innerGroupString, depthLevel);
+                        }
+                        else
+                        {
+                            newElement = new Element(wordBeforeParen, depthLevel);
+                            newElement.AddChildGrouping(innerGroupString);
+                        }
+                        
+                        elements.Add(newElement);
+
+                        cursor = matchingClosingIndex + 1;
+                        currentStringStartingIndex = cursor;
+                    }
+                    else
+                    {
+                        cursor++;
+                    }
                 }
             }
-
+            else
+            {
+                // It's possible for a grouping to be a single string without any children or peers.
+                elements.Add(new Element(this.stringRepresentation, this.depthLevel));
+            }
+            
             return elements;
         }
 
@@ -116,66 +194,6 @@ namespace FrontlineMarkupLanguagePlugin
             }
 
             return result;
-        }
-
-        /// <summary>
-        /// Tries to parse the provided string into a <see cref="Grouping"/>. Assumes a depth-level of 0.
-        /// </summary>
-        /// <param name="stringToParse">The string to try and parse.</param>
-        /// <param name="result">The resulting <see cref="Grouping"/></param>
-        /// <returns>True if the provided string is valid.</returns>
-        internal static bool TryParseGrouping(string stringToParse, out Grouping result)
-        {
-            return TryParseGrouping(stringToParse, 0, out result);
-        }
-
-        /// <summary>
-        /// Tries to parse the provided string into a <see cref="Grouping"/>.
-        /// </summary>
-        /// <param name="stringToParse">The string to try and parse.</param>
-        /// <param name="depthLevel">How many levels deep this grouping is.</param>
-        /// <param name="result">The resulting <see cref="Grouping"/></param>
-        /// <returns>True if the provided string is valid.</returns>
-        internal static bool TryParseGrouping(string stringToParse, int depthLevel, out Grouping result)
-        {
-            result = null;
-
-            if (!stringToParse.StartsWith("("))
-            {
-                return false;
-            }
-            if (!stringToParse.EndsWith(")"))
-            {
-                return false;
-            }
-
-            StringBuilder innerText = new StringBuilder(stringToParse);
-
-            // Remove first and last characters - ( and )
-            innerText.Remove(0, 1);
-            innerText.Remove(innerText.Length - 1, 1);
-
-            // After stripping () we can't end with comma (since it's used for listing).
-            if (innerText.ToString().EndsWith(","))
-            {
-                return false;
-            }
-
-            result = new Grouping(innerText.ToString(), depthLevel);
-
-            return true;
-        }
-
-        public override string ToString()
-        {
-            StringBuilder result = new StringBuilder();
-
-            foreach (Element element in this.InternalElements)
-            {
-                result.Append(element.ToString()).AppendLine();
-            }
-
-            return result.ToString();
         }
     }
 }
