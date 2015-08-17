@@ -20,6 +20,7 @@ namespace MarkupConverter.ModulesNinjectModules
     {
         public override void Load()
         {
+            // This can easily be replaced with, say, a proxy to a microservice.  
             Bind<IMarkupConverterService>().To<MarkupConverterServiceLocal.MarkupConverterServiceLocal>();
             Bind<IMarkupLanguage>().To<FrontlineMarkupLanguage>();
 

@@ -32,7 +32,7 @@ namespace FrontlineMarkupLanguagePlugin
             Grouping grouping;
             if (Grouping.TryParseGrouping(markupText, out grouping))
             {
-                result = grouping.ToFormattedString();
+                result = grouping.ToString();
             }
 
             return result;

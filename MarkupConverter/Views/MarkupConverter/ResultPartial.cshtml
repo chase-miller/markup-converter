@@ -7,6 +7,8 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-4 col-md-offset-4">@Model.ConvertedMarkup</div>
+        <div class="col-md-4 col-md-offset-4">
+            @MvcHtmlString.Create(Model.ConvertedMarkup.Replace(Environment.NewLine, "<br />"))
+        </div>
     </div>
 </div>
