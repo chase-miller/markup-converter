@@ -23,13 +23,15 @@ One weakness is that the Modules project currently knows about each of the plugi
   v							  \	
                                v
  Modules
-				     MarkupConverterServiceApi
+         \
+		   -------
+		  	      \--> MarkupConverterServiceApi
    |						
-   |                    ^                    ^
-   |                    |                     \
-   v                    |				   ^   \
-										   |	\
-MarkupConverterServiceLocal         ^      \
+   |                    ^           ^        ^
+   |                    |           |         \
+   v                    |			|	   ^   \
+									|	   |	\
+MarkupConverterServiceLocal         |      \
 									|		|	FrontlineMarkupLanguagePlugin
 									|	  PluginX
 									PluginY
