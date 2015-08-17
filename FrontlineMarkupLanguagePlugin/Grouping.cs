@@ -48,14 +48,12 @@ namespace FrontlineMarkupLanguagePlugin
         {
             result = null;
 
-            /*
             if (stringToParse.StartsWith("(") && stringToParse.EndsWith(")"))
             {
                 // Strip off the opening and closing parens
                 stringToParse = stringToParse.Remove(0, 1);
                 stringToParse = stringToParse.Remove(stringToParse.Length - 1, 1);
             }
-            */
 
             // We can't end with comma (since it's used for listing).
             if (stringToParse.EndsWith(","))
@@ -120,9 +118,9 @@ namespace FrontlineMarkupLanguagePlugin
                     }
                     else if (this.stringRepresentation[cursor] == '(')
                     {
-                        // First get the text before this ( and move the cursor.  
+                        // First add the element before this ( and move the cursor.
                         string wordBeforeParen = this.stringRepresentation.Substring(currentStringStartingIndex, (cursor - currentStringStartingIndex));
-
+                        Element newElement = new Element(wordBeforeParen, depthLevel);
                         currentStringStartingIndex = cursor;
 
                         // Now, find the matching closing parenthesis, add everything in between, and update the cursor.
@@ -130,18 +128,8 @@ namespace FrontlineMarkupLanguagePlugin
 
                         string innerGroupString = this.stringRepresentation.Substring(currentStringStartingIndex, (matchingClosingIndex - currentStringStartingIndex));
 
-                        // If there is no word before (, this must just be a grouping without an element.
-                        Element newElement;
-                        if (string.IsNullOrEmpty(wordBeforeParen))
-                        {
-                            newElement = new Element(innerGroupString, depthLevel);
-                        }
-                        else
-                        {
-                            newElement = new Element(wordBeforeParen, depthLevel);
-                            newElement.AddChildGrouping(innerGroupString);
-                        }
-                        
+                        newElement.AddChildGrouping(innerGroupString);
+
                         elements.Add(newElement);
 
                         cursor = matchingClosingIndex + 1;
