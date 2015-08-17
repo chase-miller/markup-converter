@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace FrontlineMarkupLanguagePlugin
 {
+    /// <summary>
+    /// Represents an item.  May or may not have child groupings.
+    /// </summary>
     internal class Element
     {
         private string elementAsString;

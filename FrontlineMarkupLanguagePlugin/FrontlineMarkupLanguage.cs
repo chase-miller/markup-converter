@@ -34,10 +34,6 @@ namespace FrontlineMarkupLanguagePlugin
             {
                 result = grouping.ToString();
             }
-            else
-            {
-                throw new ArgumentException(result);
-            }
 
             return result;
         }

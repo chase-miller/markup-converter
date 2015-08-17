@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace FrontlineMarkupLanguagePlugin
 {
+    /// <summary>
+    /// Represents one or more elements.
+    /// </summary>
     class Grouping
     {
         private string stringRepresentation;
@@ -48,6 +51,11 @@ namespace FrontlineMarkupLanguagePlugin
         {
             result = null;
 
+            if (string.IsNullOrWhiteSpace(stringToParse))
+            {
+                return false;
+            }
+
             if (stringToParse.StartsWith("(") && stringToParse.EndsWith(")"))
             {
                 // Strip off the opening and closing parens
@@ -61,7 +69,15 @@ namespace FrontlineMarkupLanguagePlugin
                 return false;
             }
 
-            result = new Grouping(stringToParse, depthLevel);
+            try
+            {
+                result = new Grouping(stringToParse, depthLevel);
+            }
+            catch (Exception)
+            {
+                // Since it's a TryParse swallow the exception.  This is really bad practice, but for now it's fine.
+                return false;
+            }
 
             return true;
         }
