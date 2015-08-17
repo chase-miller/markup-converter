@@ -48,6 +48,8 @@ namespace FrontlineMarkupLanguagePlugin
         {
             result = null;
 
+            stringToParse = stringToParse.Replace(" ", "");
+
             if (stringToParse.StartsWith("(") && stringToParse.EndsWith(")"))
             {
                 // Strip off the opening and closing parens
@@ -61,15 +63,7 @@ namespace FrontlineMarkupLanguagePlugin
                 return false;
             }
 
-            try
-            {
-                result = new Grouping(stringToParse, depthLevel);
-            }
-            catch (Exception)
-            {
-                // Since this is a try, swallow the exception.
-                return false;
-            }
+            result = new Grouping(stringToParse, depthLevel);
 
             return true;
         }
@@ -134,6 +128,18 @@ namespace FrontlineMarkupLanguagePlugin
 
                         cursor = matchingClosingIndex + 1;
                         currentStringStartingIndex = cursor;
+                    }
+                    else if (cursor == (this.stringRepresentation.Length - 1))
+                    {
+                        string finalWord = this.stringRepresentation.Substring(currentStringStartingIndex, (this.stringRepresentation.Length - currentStringStartingIndex));
+                        if (finalWord.StartsWith(","))
+                        {
+                            finalWord = finalWord.Remove(0, 1);
+                        }
+
+                        elements.Add(new Element(finalWord, depthLevel));
+
+                        cursor++;
                     }
                     else
                     {
