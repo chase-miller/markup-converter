@@ -15,21 +15,22 @@ This application uses Ninject to achieve dependency injection.  The Web project 
 One weakness is that the Modules project currently knows about each of the plugin projects.  Once I figure out how to use Ninject's assembly scanning ability properly, hopefully this can follow a full slot-in architecture.
 
 ### Diagram
->
->      MarkupConverterWeb
->
->  |							\	
->  |							 \	
->  v							  \	
->                               v
-> Modules
->				     MarkupConverterServiceApi
->   |						
->   |                    ^                    ^
->   |                    |                     \
->   v                    |				   ^   \
->										   |	\
->MarkupConverterServiceLocal         ^      \
->									|		|	FrontlineMarkupLanguagePlugin
->									|	  PluginX
->									PluginY
+<pre><code>
+      MarkupConverterWeb
+
+  |							\	
+  |							 \	
+  v							  \	
+                               v
+ Modules
+				     MarkupConverterServiceApi
+   |						
+   |                    ^                    ^
+   |                    |                     \
+   v                    |				   ^   \
+										   |	\
+MarkupConverterServiceLocal         ^      \
+									|		|	FrontlineMarkupLanguagePlugin
+									|	  PluginX
+									PluginY
+</code></pre>
