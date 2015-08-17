@@ -8,6 +8,7 @@ This is a standard ASP.NET MVC web app.  To install, follow [this Microsoft arti
 You can add your own markup language!
 
 In a nutshell:
+
 1. Create a public class that implements the IMarkupLanguage interface
 1. Compile 
 1. Drop the dll into the same directory as the MarkupConverterServiceApi dll 
