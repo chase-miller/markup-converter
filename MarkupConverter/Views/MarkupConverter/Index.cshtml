@@ -11,15 +11,14 @@
     </div>
     <div class="row">
         <div class="col-md-4 col-md-offset-4">
-            @using (Ajax.BeginForm("ConvertMarkup", new AjaxOptions()
+            @using (Ajax.BeginForm("ConvertMarkup", null, new AjaxOptions()
             {
                 InsertionMode = InsertionMode.Replace,
                 UpdateTargetId = "result-placeholder"
-            }))
+            }, new { @class = "form-horizontal" }))
             {
                 @Html.AntiForgeryToken()
                 @Html.ValidationSummary(true)
-                <form class="form-horizontal">
                     <div class="form-group">
                         @Html.LabelFor(model => model.MarkupText, new { @class = "col-md-2 control-label" })
                         <div class="col-md-10">
@@ -45,7 +44,6 @@
                             <button type="submit" class="btn btn-default">Convert</button>
                         </div>
                     </div>
-                </form>
             }
         </div>
     </div>
