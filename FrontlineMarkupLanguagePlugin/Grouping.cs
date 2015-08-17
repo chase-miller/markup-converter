@@ -86,6 +86,8 @@ namespace FrontlineMarkupLanguagePlugin
         {
             StringBuilder result = new StringBuilder();
 
+            this.Elements.Sort();
+
             foreach (Element element in this.Elements)
             {
                 string elementAsString = element.ToString();

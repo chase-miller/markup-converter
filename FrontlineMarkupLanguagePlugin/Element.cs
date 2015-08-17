@@ -9,7 +9,7 @@ namespace FrontlineMarkupLanguagePlugin
     /// <summary>
     /// Represents an item.  May or may not have child groupings.
     /// </summary>
-    internal class Element
+    internal class Element : IComparable
     {
         private string elementAsString;
         private int depthLevel = 0;
@@ -68,6 +68,23 @@ namespace FrontlineMarkupLanguagePlugin
             }
 
             return appender;
+        }
+
+        public int CompareTo(object obj)
+        {
+            int result = 0;
+
+            if (obj is Element)
+            {
+                Element objectAsElement = (Element)obj;
+
+                string thisString = this.elementAsString.Replace(" ", "");
+                string thatString = objectAsElement.elementAsString.Replace(" ", "");
+
+                result = thisString.CompareTo(thatString);
+            }
+
+            return result;
         }
     }
 }
