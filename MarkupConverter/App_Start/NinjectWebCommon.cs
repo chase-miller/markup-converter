@@ -51,9 +51,6 @@ namespace MarkupConverterWeb.App_Start
                 kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);
                 kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
 
-                // Avoid direct references to implementations by referencing a composite root.
-                kernel.Load(Assembly.GetAssembly(typeof(NinjectModules)));
-
                 RegisterServices(kernel);
 
                 return kernel;
@@ -71,10 +68,8 @@ namespace MarkupConverterWeb.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
-            kernel.Bind(x => x
-                .FromAssembliesInPath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location))
-                .SelectAllClasses()
-                .BindDefaultInterface());
+            // Avoid direct references to implementations by referencing a composite root.
+            kernel.Load(Assembly.GetAssembly(typeof(NinjectModules)));
         }
     }
 }

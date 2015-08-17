@@ -22,15 +22,17 @@ namespace MarkupConverter.ModulesNinjectModules
         {
             // This can easily be replaced with, say, a proxy to a microservice.  
             Bind<IMarkupConverterService>().To<MarkupConverterServiceLocal.MarkupConverterServiceLocal>();
+
+            // For ease of building, we'll add this plugin as a reference. 
             Bind<IMarkupLanguage>().To<FrontlineMarkupLanguage>();
 
-            string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            string path = Path.GetDirectoryName(Assembly.GetAssembly(typeof(MarkupConverterServiceApi.IMarkupConverterService)).Location);
 
             // Find any plugins that 3rd parties may have added.
             this.Kernel.Bind(scanner => scanner.FromAssembliesInPath(path)
                                    .SelectAllClasses()
                                    .InheritedFrom<IMarkupLanguage>()
-                                   .BindDefaultInterface());
+                                   .BindAllInterfaces());
         }
     }
 }
